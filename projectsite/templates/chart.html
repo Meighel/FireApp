@@ -116,11 +116,12 @@
     </div>
 </div>
 {% endblock %} {% block chart %}
+
 <script>
     var lineChart = document.getElementById("lineChart").getContext("2d"),
         barChart = document.getElementById("barChart").getContext("2d"),
         pieChart = document.getElementById("pieChart").getContext("2d"),
-        doughnutChart = document.getElementById("doughnutChartChart").getContext("2d"),
+        doughnutChart = document.getElementById("doughnutChart").getContext("2d"),
         radarChart = document.getElementById("radarChart").getContext("2d"),
         bubbleChart = document.getElementById("bubbleChart").getContext("2d"),
         multipleLineChart = document.getElementById("multipleLineChart").getContext("2d"),
@@ -167,7 +168,7 @@
                 caretPadding: 10,
             },
             layout: {
-                padding: { left: 15, right: 15, top: 15, buttom: 15 },
+                padding: { left: 15, right: 15, top: 15, bottom: 15 },
             },
         },
     });
