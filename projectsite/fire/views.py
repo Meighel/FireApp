@@ -42,13 +42,3 @@ def PieCountbySeverity(request):
         data = {}
 
     return JsonResponse(data)
-
-# debuging text function of PieCountbySeverity
-# def PieCountbySeverity(request):
-#     # Mock data for testing purposes
-#     data = {
-#         "High": 30,
-#         "Medium": 50,
-#         "Low": 20
-#     }
-#     return JsonResponse(data)
