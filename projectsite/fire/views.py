@@ -137,3 +137,39 @@ def MultilineIncidentTop3Country(request):
         result[country] = dict(sorted(result[country].items()))
 
     return JsonResponse(result)
+
+def multipleBarbySeverity(request):
+    query = '''
+    SELECT
+        fi.severity_level,
+        strftime('%m', fi.date_time) AS month,
+        COUNT(fi.id) AS incident_count
+    FROM
+        fire_incident fi
+    GROUP BY fi.severity_level, month
+    '''
+
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        rows = cursor.fetchall()
+
+    result = {}
+    months = {str(i).zfill(2) for i in range(1, 13)}  # Ensure all months are included
+
+    for row in rows:
+        severity_level = row[0]
+        month = row[1]
+        count = row[2]
+
+        if severity_level not in result:
+            result[severity_level] = {month: 0 for month in months}
+
+        result[severity_level][month] = count
+
+    # Sort months within each severity level
+    for severity_level in result:
+        result[severity_level] = dict(sorted(result[severity_level].items()))
+
+    return JsonResponse(result)
+
+

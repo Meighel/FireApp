@@ -334,6 +334,86 @@
                 });
             })
             .catch((error) => console.error("Error:", error));
+    
+        // multiBarChart
+        fetch("/multiBarChart/")
+        .then((response) => response.json())
+        .then((result) => {
+            console.log("Data fetched from API:", result);
+
+        // Default data arrays for each severity level
+        const months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+        const incidentCount_major = [];
+        const incidentCount_minor = [];
+        const incidentCount_moderate = [];
+
+        months.forEach((month) => {
+            incidentCount_major.push(result["Major Fire"]?.[month] || 0);
+            incidentCount_minor.push(result["Minor Fire"]?.[month] || 0);
+            incidentCount_moderate.push(result["Moderate Fire"]?.[month] || 0);
+        });
+
+        console.log("Major incidents:", incidentCount_major);
+        console.log("Minor incidents:", incidentCount_minor);
+        console.log("Moderate incidents:", incidentCount_moderate);
+
+        var multipleBarChart = document.getElementById("multipleBarChart").getContext("2d");
+
+        new Chart(multipleBarChart, {
+            type: "bar",
+            data: {
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                datasets: [
+                    {
+                        label: "Minor Fire",
+                        backgroundColor: "#59d05d",
+                        borderColor: "#59d05d",
+                        data: incidentCount_minor,
+                    },
+                    {
+                        label: "Moderate Fire",
+                        backgroundColor: "#fdaf4b",
+                        borderColor: "#fdaf4b",
+                        data: incidentCount_moderate,
+                    },
+                    {
+                        label: "Major Fire",
+                        backgroundColor: "#177dff",
+                        borderColor: "#177dff",
+                        data: incidentCount_major,
+                    },
+                ],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: "bottom",
+                },
+                title: {
+                    display: true,
+                    text: "Fire Incidents by Severity Level",
+                },
+                tooltips: {
+                    mode: "index",
+                    intersect: false,
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            stacked: true,
+                        },
+                    ],
+                    yAxes: [
+                        {
+                            stacked: true,
+                        },
+                    ],
+                },
+            },
+        });
+    })
+        .catch((error) => console.error("Error fetching data:", error));
     }
     loadChartData();
 </script>
@@ -346,7 +426,7 @@
         radarChart = document.getElementById("radarChart").getContext("2d"),
         bubbleChart = document.getElementById("bubbleChart").getContext("2d"),
         // multipleLineChart = document.getElementById("multipleLineChart").getContext("2d"),
-        multipleBarChart = document.getElementById("multipleBarChart").getContext("2d"),
+        // multipleBarChart = document.getElementById("multipleBarChart").getContext("2d"),
         htmlLegendsChart = document.getElementById("htmlLegendsChart").getContext("2d");
     // var myLineChart = new Chart(lineChart, {
     //     type: "line",
@@ -644,54 +724,54 @@
     //     },
     // });
 
-    var myMultipleBarChart = new Chart(multipleBarChart, {
-        type: "bar",
-        data: {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            datasets: [
-                {
-                    label: "First time visitors",
-                    backgroundColor: "#59d05d",
-                    borderColor: "#59d05d",
-                    data: [95, 100, 112, 101, 144, 159, 178, 156, 188, 190, 210, 245],
-                },
-                {
-                    label: "Visitors",
-                    backgroundColor: "#fdaf4b",
-                    borderColor: "#fdaf4b",
-                    data: [185, 279, 273, 287, 234, 312, 322, 286, 301, 320, 346, 399],
-                },
-            ],
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            legend: {
-                position: "bottom",
-            },
-            title: {
-                display: true,
-                text: "Traffic Stats",
-            },
-            tooltips: {
-                mode: "index",
-                intersect: false,
-            },
-            responsive: true,
-            scales: {
-                xAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
-                yAxes: [
-                    {
-                        stacked: true,
-                    },
-                ],
-            },
-        },
-    });
+    // var myMultipleBarChart = new Chart(multipleBarChart, {
+    //     type: "bar",
+    //     data: {
+    //         labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    //         datasets: [
+    //             {
+    //                 label: "First time visitors",
+    //                 backgroundColor: "#59d05d",
+    //                 borderColor: "#59d05d",
+    //                 data: [95, 100, 112, 101, 144, 159, 178, 156, 188, 190, 210, 245],
+    //             },
+    //             {
+    //                 label: "Visitors",
+    //                 backgroundColor: "#fdaf4b",
+    //                 borderColor: "#fdaf4b",
+    //                 data: [185, 279, 273, 287, 234, 312, 322, 286, 301, 320, 346, 399],
+    //             },
+    //         ],
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         maintainAspectRatio: false,
+    //         legend: {
+    //             position: "bottom",
+    //         },
+    //         title: {
+    //             display: true,
+    //             text: "Traffic Stats",
+    //         },
+    //         tooltips: {
+    //             mode: "index",
+    //             intersect: false,
+    //         },
+    //         responsive: true,
+    //         scales: {
+    //             xAxes: [
+    //                 {
+    //                     stacked: true,
+    //                 },
+    //             ],
+    //             yAxes: [
+    //                 {
+    //                     stacked: true,
+    //                 },
+    //             ],
+    //         },
+    //     },
+    // });
 
     // Chart with HTML Legends
 
