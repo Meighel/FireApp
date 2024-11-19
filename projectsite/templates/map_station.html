@@ -29,7 +29,7 @@
             <div class="card card-transparent">
                 <div class="card-header">
                     <h4 class="card-title text-center">Fire Stations</h4>
-                    <p class="card-category text-center">Looks freat on any resolution. Made by our friends from <a href="https://www.openstreetmap.org/copyright">OpenStreeMap</a>.</p>
+                    <p class="card-category text-center">Looks great on any resolution. Made by our friends from <a href="https://www.openstreetmap.org/copyright">OpenStreeMap</a>.</p>
                 </div>
                 <div class="card-body">
                     <div class="col-md-10 ml-auto mr-auto">
@@ -59,7 +59,7 @@ contributors'
     //Define the marker data
     var markerData = {{ fireStatons|safe }};
 
-    // Loop through the marker dta and create marker
+    // Loop through the marker dta and create markers
     markerData.forEach(function (data) {
         var latitude = parseFloat(data.latitude);
         var longitude = parseFloat(data.longtitude);
