@@ -190,12 +190,12 @@ def map_station(request):
     return render(request, 'map_station.html', context)
 
 def map_incident_view(request):
-    # Query the incidents and access latitude and longitude via the related Location model
     incidents = Incident.objects.select_related('location').all().values(
-        'location__latitude', 'location__longitude', 'severity_level', 'location__name'
+        'location__latitude', 'location__longitude', 'severity_level', 'location__name', 'location__city'
     )
 
-    # Convert latitude and longitude to float for consistency
+    cities = Locations.objects.values('city').distinct()
+
     for incident in incidents:
         incident['location__latitude'] = float(incident['location__latitude'])
         incident['location__longitude'] = float(incident['location__longitude'])
@@ -204,4 +204,5 @@ def map_incident_view(request):
 
     return render(request, 'map_incident.html', {
         'incidents': incidents_list,
+        'cities': cities,
     })

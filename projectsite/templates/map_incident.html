@@ -34,6 +34,16 @@
                     <p class="card-category text-center">Interactive map showing fire incidents.</p>
                 </div>
                 <div class="card-body">
+                    <!-- Dropdown for City -->
+                    <div class="col-md-4 ml-auto mr-auto">
+                        <select id="city-filter" class="form-control">
+                            <option value="">Select City</option>
+                            {% for city in cities %}
+                                <option value="{{ city.city }}">{{ city.city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
                     <div class="col-md-10 ml-auto mr-auto">
                         <div id="map" style="width: 100%; height: 400px"></div>
                     </div>
@@ -45,41 +55,56 @@
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([9.81644, 118.72239], 13);  // Set initial map view (coordinates can be adjusted)
+    var map = L.map('map').setView([9.81644, 118.72239], 13); 
 
-    // Define the custom icon for fire trucks
-    var truckIcon = L.icon({
+    var fireIcon = L.icon({
         iconUrl: "{% static 'img/fire.png' %}",
-        iconSize: [50, 50],  // Icon size
+        iconSize: [50, 50], 
     });
 
-    // Set up the tile layer for the map
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Marker data passed from Django view
     var incidentData = {{ incidents|safe }};  // Assuming 'incidents' is passed as JSON data to template
+    var markers = [];  
 
-    // Loop through each incident and add a marker
-    incidentData.forEach(function (data) {
-        var latitude = parseFloat(data.location__latitude);  // Access latitude from the location field
-        var longitude = parseFloat(data.location__longitude);  // Access longitude from the location field
-
-        // Create marker for each incident with firetruck icon
-        var marker = L.marker([latitude, longitude], { icon: truckIcon }).addTo(map);
-
-        // Add a popup to show the severity level of the incident
-        var popupContent = "<b>Incident:</b> " + data.severity_level + "<br><b>Location:</b> " + data.location__name;
-        marker.bindPopup(popupContent);
-
-        marker.on('mouseover', function () {
-            this.openPopup();
+    function updateMap(city) {
+        markers.forEach(function(marker) {
+            map.removeLayer(marker);
         });
-        marker.on('mouseout', function () {
-            this.closePopup();
+        markers = []; 
+
+        incidentData.forEach(function(data) {
+            var latitude = parseFloat(data.location__latitude);  
+            var longitude = parseFloat(data.location__longitude);  
+            var incidentCity = data.location__city;  
+
+            if (city === "" || city === incidentCity) {
+                var marker = L.marker([latitude, longitude], { icon: fireIcon }).addTo(map);
+
+                var popupContent = "<b>Incident:</b> " + data.severity_level + "<br><b>Location:</b> " + data.location__name;
+                marker.bindPopup(popupContent);
+
+                marker.on('mouseover', function () {
+                    this.openPopup();
+                });
+                marker.on('mouseout', function () {
+                    this.closePopup();
+                });
+
+                markers.push(marker); 
+            }
         });
+    }
+
+    // Initialize map with all incidents
+    updateMap("");
+    console.log(incidentData); //debug
+
+    document.getElementById('city-filter').addEventListener('change', function(event) {
+        var selectedCity = event.target.value;
+        updateMap(selectedCity);  
     });
 </script>
-
 {% endblock %}
