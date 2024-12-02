@@ -206,3 +206,11 @@ def map_incident_view(request):
         'incidents': incidents_list,
         'cities': cities,
     })
+
+class IncidentList(ListView):
+    model = Incident
+    context_object_name = 'incident'
+    template_name = 'incident_list.html'
+    paginate_by = 5
+
+    
