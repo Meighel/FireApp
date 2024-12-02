@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
-from fire.models import Locations, Incident, FireStation
+from django.views.generic.edit import CreateView
+from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
+from fire.forms import IncidentForm
+from django.urls import reverse_lazy
 from django.db import connection
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
@@ -213,4 +216,10 @@ class IncidentList(ListView):
     template_name = 'incident_list.html'
     paginate_by = 5
 
-    
+class IncidentCreateView(CreateView):
+    model = Incident
+    form_class = IncidentForm
+    template_name = 'incident_add.html'
+    success_url = reverse_lazy('incident_list')
+
+

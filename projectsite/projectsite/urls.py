@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from fire.views import HomePageView, IncidentList, ChartView, PieCountbySeverity, LineCountByMonth, MultilineIncidentTop3Country, multipleBarbySeverity
+from fire.views import HomePageView, IncidentList, IncidentCreateView, ChartView, PieCountbySeverity, LineCountByMonth, MultilineIncidentTop3Country, multipleBarbySeverity
 from fire import views
 
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
     path('map_incident/', views.map_incident_view, name='map_incident'),
 
     path('incident_list/', IncidentList.as_view(), name='incident-list'),
+    path('incident_list/add/', IncidentCreateView.as_view(), name="incident-add"),
 ]
