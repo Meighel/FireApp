@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
-from fire.forms import IncidentForm
+from fire.forms import IncidentForm, WeatherConditionsForm
 from django.urls import reverse_lazy
 from django.db import connection
 from django.http import JsonResponse
@@ -11,6 +11,7 @@ from django.db.models import Count
 from datetime import datetime
 from django.shortcuts import render
 from geopy.distance import geodesic
+from django.contrib import messages
 
 
 class HomePageView(ListView):
@@ -222,8 +223,66 @@ class IncidentCreateView(CreateView):
     template_name = 'incident_add.html'
     success_url = reverse_lazy('incident-list')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'The incident has been successfully added.')
+
+        return super().form_valid(form)
+
 class IncidentUpdateView(UpdateView):
     model = Incident
     form_class = IncidentForm
     template_name = 'incident_edit.html'
     success_url = reverse_lazy('incident-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The incident has been successfully updated.')
+
+        return super().form_valid(form)
+
+class IncidentDeleteView(DeleteView):
+    model = Incident
+    template_name = 'incident_del.html'
+    success_url = reverse_lazy('incident-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Successfully deleted.')
+
+        return super().form_valid(form)
+
+class WeatherConditionsList(ListView):
+    model = WeatherConditions
+    context_object_name = 'weather_condition'
+    template_name = 'weatherconditions_list.html'
+    paginate_by = 5
+
+class WeatherConditionsCreateView(CreateView):
+    model = WeatherConditions
+    form_class = WeatherConditionsForm
+    template_name = 'weatherconditions_add.html'
+    success_url = reverse_lazy('weather-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The weather condition has been successfully added.')
+
+        return super().form_valid(form)
+
+class WeatherConditionsUpdateView(UpdateView):
+    model = WeatherConditions
+    form_class = WeatherConditionsForm
+    template_name = 'weatherconditions_edit.html'
+    success_url = reverse_lazy('weather-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The weather condition has been successfully updated.')
+
+        return super().form_valid(form)
+
+class WeatherConditionsDeleteView(DeleteView):
+    model = WeatherConditions
+    template_name = 'weatherconditions_del.html'
+    success_url = reverse_lazy('weather-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Successfully deleted.')
+
+        return super().form_valid(form)

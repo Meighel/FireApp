@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.timezone import now
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -29,12 +29,13 @@ class Incident(BaseModel):
         ('Major Fire', 'Major Fire'),
     )
     location = models.ForeignKey(Locations, on_delete=models.CASCADE)
-    date_time = models.DateTimeField(blank=True, null=True)
+    date_time = models.DateTimeField(default=now, blank=True, null=True)  # Use timezone-aware default
     severity_level = models.CharField(max_length=45, choices=SEVERITY_CHOICES)
     description = models.CharField(max_length=250)
 
     def __str__(self):
-        return f"Incident at {self.location} on {self.date_time.strftime('%Y-%m-%d %H:%M:%S')}"
+        # Safely handle date_time if it's null
+        return f"Incident at {self.location} on {self.date_time.strftime('%Y-%m-%d %H:%M:%S') if self.date_time else 'Unknown'}"
 
 
 class FireStation(BaseModel):

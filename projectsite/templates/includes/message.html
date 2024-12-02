@@ -1,0 +1,95 @@
+{% load static %}
+<style>
+  /* Toast container */
+  #toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+  }
+
+  /* Toast styling */
+  .toast {
+    margin-bottom: 10px;
+    background-color: skyblue;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 300px;
+  }
+
+  .toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+  }
+
+  .toast-header img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .toast-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .toast-body {
+    padding: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .toast-body strong {
+    font-weight: bold;
+  }
+</style>
+
+<div id="toast-container" aria-live="polite" aria-atomic="true">
+  <!-- Toasts will be dynamically inserted here -->
+</div>
+
+{% if messages %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    {% for message in messages %}
+      // Create a new toast element
+      const toastHTML = `
+      <div class="toast">
+          <div class="toast-header">
+            <img src="{% static 'img/icon.png' %}" alt="logo">
+            <strong>Fire App</strong>
+            <button aria-label="Close">&times;</button>
+          </div>
+          <div class="toast-body">
+            {{ message|escapejs }}
+          </div>
+      </div>`;
+
+      const toastContainer = document.getElementById('toast-container');
+      toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+      const toastElement = toastContainer.lastElementChild;
+      const closeButton = toastElement.querySelector('button');
+      closeButton.addEventListener('click', () => {
+        toastElement.remove(); 
+      });
+
+      setTimeout(() => {
+        if (toastElement.parentElement) {
+          toastElement.remove();
+        }
+      }, 3000);
+    {% endfor %}
+  });
+</script>
+{% endif %}
