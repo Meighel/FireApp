@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
 from fire.forms import IncidentForm
 from django.urls import reverse_lazy
@@ -220,6 +220,10 @@ class IncidentCreateView(CreateView):
     model = Incident
     form_class = IncidentForm
     template_name = 'incident_add.html'
-    success_url = reverse_lazy('incident_list')
+    success_url = reverse_lazy('incident-list')
 
-
+class IncidentUpdateView(UpdateView):
+    model = Incident
+    form_class = IncidentForm
+    template_name = 'incident_edit.html'
+    success_url = reverse_lazy('incident-list')

@@ -38,6 +38,7 @@
                                     <th scope="col">Date Time</th>
                                     <th scope="col">Severity Level</th>
                                     <th scope="col">Description</th>
+                                    <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,14 +55,15 @@
                                             </span>
                                         </td>
                                         <td>{{ object.description }}</td>
+                                        <td><a href="{{ object.id }}">Edit</a></td>
                                     </tr>
                                     {% endfor %}
                                 {% else %}
                                     <tr>
-                                        <td colspan="4" class="text-center">No fire incidents found.</td>
+                                        <td colspan="5" class="text-center">No fire incidents found.</td>
                                     </tr>
                                 {% endif %}
-                            </tbody>
+                            </tbody>                            
                         </table>
                         {% include 'includes/pagination.html' %}
                     </div>
