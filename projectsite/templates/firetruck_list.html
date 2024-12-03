@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">List of Fire Truck</div>
+                        <div class="card-category text-muted">Fire Truck</div>
+                    </div>
+                    <br />
+                    <div class="col-md-12 row">
+                        <div class="col-md-6">
+                            <form class="navbar-left navbar-form nav-search mr-md-3" action="">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Search..." class="form-control" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-search search-icon"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pull-right">
+                                <a href="{% url 'truck-add' %}" class="btn btn-success btn-rounded">Add Truck</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped mt-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Truck Number</th>
+                                    <th scope="col">Model</th>
+                                    <th scope="col">Capacity</th>
+                                    <th scope="col">Station</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if object_list %}
+                                    {% for object in object_list %}
+                                    <tr>
+                                        <td>{{ object.truck_number }}</td>
+                                        <td>{{ object.model }}</td>
+                                        <td>{{ object.capacity }}</td>
+                                        <td>{{ object.station }}</td>
+                                        <!-- <td>
+                                            <a href="{% url 'station-update' object.id %}">Edit</a>
+                                            <a href="{% url 'station-delete' object.id %}" class="text-danger">Delete</a>
+                                        </td> -->
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center">No fire incidents found.</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>                            
+                        </table>
+                        {% include 'includes/pagination.html' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

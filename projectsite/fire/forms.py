@@ -6,12 +6,17 @@ from fire.models import Locations, Incident, FireStation, Firefighters, FireTruc
 from django.forms.widgets import DateTimeInput
 from datetime import datetime
 
-class FireStationForm(ModelForm):
+class FireStationForm(forms.ModelForm):
     class Meta:
         model = FireStation
         fields = "__all__"
 
-class LocationsForm(ModelForm):
+class FireTruckForm(forms.ModelForm):
+    class Meta:
+        model = FireTruck
+        fields = "__all__"
+
+class LocationsForm(forms.ModelForm):
     class Meta:
         model = Locations
         fields = "__all__"

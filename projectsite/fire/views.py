@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
-from fire.forms import FireStationForm, LocationsForm, IncidentForm, WeatherConditionsForm
+from fire.forms import FireStationForm, FireTruckForm, LocationsForm, IncidentForm, WeatherConditionsForm
 from django.urls import reverse_lazy
 from django.db import connection
 from django.http import JsonResponse
@@ -234,10 +234,37 @@ class FireStationUpdateView(UpdateView):
     template_name = 'firestation_edit.html'
     success_url = reverse_lazy('station-list')
 
+    def form_valid(self, form):
+        messages.success(self.request, 'The station has been successfully updated.')
+
+        return super().form_valid(form)
+
 class FireStationDeleteView(DeleteView):
     model = FireStation
     template_name = 'firestation_del.html'
     success_url = reverse_lazy('station-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Successfully deleted.')
+
+        return super().form_valid(form)
+
+class FireTruckList(ListView):
+    model = FireTruck
+    context_object_name = 'fire_truck'
+    template_name = 'firetruck_list.html'
+    paginate_by = 5
+
+class FireTruckCreateView(CreateView):
+    model = FireTruck
+    form_class = FireTruckForm
+    template_name = 'firetruck_add.html'
+    success_url = reverse_lazy('truck-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The truck has been successfully added.')
+
+        return super().form_valid(form)
 
 class IncidentList(ListView):
     model = Incident
