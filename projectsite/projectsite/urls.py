@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from fire.views import HomePageView, IncidentList, IncidentCreateView, IncidentUpdateView, IncidentDeleteView, WeatherConditionsList, WeatherConditionsCreateView, WeatherConditionsUpdateView, WeatherConditionsDeleteView, ChartView, PieCountbySeverity, LineCountByMonth, MultilineIncidentTop3Country, multipleBarbySeverity
+from fire.views import HomePageView, LocationsList, LocationsCreateView, LocationsUpdateView, LocationsDeleteView, IncidentList, IncidentCreateView, IncidentUpdateView, IncidentDeleteView, WeatherConditionsList, WeatherConditionsCreateView, WeatherConditionsUpdateView, WeatherConditionsDeleteView, ChartView, PieCountbySeverity, LineCountByMonth, MultilineIncidentTop3Country, multipleBarbySeverity
 from fire import views
 
 urlpatterns = [
@@ -14,6 +14,11 @@ urlpatterns = [
     path('stations', views.map_station, name='map-station'),
     path('map_incident/', views.map_incident_view, name='map_incident'),
 
+
+    path('locations_list/', LocationsList.as_view(), name='location-list'),
+    path('locations_list/add/', LocationsCreateView.as_view(), name='location-add'),
+    path('locations_list/<pk>/', LocationsUpdateView.as_view(), name='location-update'),
+    path('locations_list/<pk>/delete', LocationsDeleteView.as_view(), name='location-delete'),
     path('incident_list/', IncidentList.as_view(), name='incident-list'),
     path('incident_list/add/', IncidentCreateView.as_view(), name='incident-add'),
     path('incident_list/<pk>/', IncidentUpdateView.as_view(), name='incident-update'),

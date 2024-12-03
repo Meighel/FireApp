@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
-from fire.forms import IncidentForm, WeatherConditionsForm
+from fire.forms import LocationsForm, IncidentForm, WeatherConditionsForm
 from django.urls import reverse_lazy
 from django.db import connection
 from django.http import JsonResponse
@@ -210,6 +210,29 @@ def map_incident_view(request):
         'incidents': incidents_list,
         'cities': cities,
     })
+
+class LocationsList(ListView):
+    model = Locations
+    context_object_name = 'locations'
+    template_name = 'locations_list.html'
+    paginate_by = 5
+
+class LocationsCreateView(CreateView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'locations_add.html'
+    success_url = reverse_lazy('locations-list')
+
+class LocationsUpdateView(UpdateView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'locations_edit.html'
+    success_url = reverse_lazy('locations-list')
+
+class LocationsDeleteView(DeleteView):
+    model = Locations
+    template_name = 'locations_del.html'
+    success_url = reverse_lazy('locations-list')
 
 class IncidentList(ListView):
     model = Incident
