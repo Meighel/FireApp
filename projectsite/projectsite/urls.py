@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from fire.views import HomePageView, LocationsList, LocationsCreateView, LocationsUpdateView, LocationsDeleteView, IncidentList, IncidentCreateView, IncidentUpdateView, IncidentDeleteView, WeatherConditionsList, WeatherConditionsCreateView, WeatherConditionsUpdateView, WeatherConditionsDeleteView, ChartView, PieCountbySeverity, LineCountByMonth, MultilineIncidentTop3Country, multipleBarbySeverity
+from fire.views import HomePageView, FireStationsList, FireStationCreateView, FireStationUpdateView, FireStationDeleteView, LocationsList, LocationsCreateView, LocationsUpdateView, LocationsDeleteView, IncidentList, IncidentCreateView, IncidentUpdateView, IncidentDeleteView, WeatherConditionsList, WeatherConditionsCreateView, WeatherConditionsUpdateView, WeatherConditionsDeleteView, ChartView, PieCountbySeverity, LineCountByMonth, MultilineIncidentTop3Country, multipleBarbySeverity
 from fire import views
 
 urlpatterns = [
@@ -14,7 +14,10 @@ urlpatterns = [
     path('stations', views.map_station, name='map-station'),
     path('map_incident/', views.map_incident_view, name='map_incident'),
 
-
+    path('firestation_list/', FireStationsList.as_view(), name='station-list'),
+    path('firestation_list/add/', FireStationCreateView.as_view(), name='station-add'),
+    path('firestation_list/<pk>/', FireStationUpdateView.as_view(), name='station-update'),
+    path('firestation_list/<pk>/delete/', FireStationDeleteView.as_view(), name='station-delete'),
     path('locations_list/', LocationsList.as_view(), name='location-list'),
     path('locations_list/add/', LocationsCreateView.as_view(), name='location-add'),
     path('locations_list/<pk>/', LocationsUpdateView.as_view(), name='location-update'),
