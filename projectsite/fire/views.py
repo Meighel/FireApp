@@ -265,6 +265,27 @@ class FireTruckCreateView(CreateView):
         messages.success(self.request, 'The truck has been successfully added.')
 
         return super().form_valid(form)
+    
+class FireTruckUpdateView(UpdateView):
+    model = FireTruck
+    form_class = FireTruckForm
+    template_name = 'firetruck_edit.html'
+    success_url = reverse_lazy('truck-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The truck has been successfully updated.')
+
+        return super().form_valid(form)
+    
+class FireTruckDeleteView(DeleteView):
+    model = FireTruck
+    template_name = 'firetruck_del.html'
+    success_url = reverse_lazy('truck-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Successfully deleted.')
+
+        return super().form_valid(form)
 
 class IncidentList(ListView):
     model = Incident
