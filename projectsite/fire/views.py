@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
-from fire.forms import FireStationForm, FireTruckForm, LocationsForm, IncidentForm, WeatherConditionsForm
+from fire.forms import FireStationForm, FireTruckForm, FireFighterForm, LocationsForm, IncidentForm, WeatherConditionsForm
 from django.urls import reverse_lazy
 from django.db import connection
 from django.http import JsonResponse
@@ -224,7 +224,7 @@ class FireStationCreateView(CreateView):
     success_url = reverse_lazy('station-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The station has been successfully added.')
+        messages.success(self.request, 'The station has been added.')
 
         return super().form_valid(form)
     
@@ -235,7 +235,7 @@ class FireStationUpdateView(UpdateView):
     success_url = reverse_lazy('station-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The station has been successfully updated.')
+        messages.success(self.request, 'The station has been updated.')
 
         return super().form_valid(form)
 
@@ -262,7 +262,7 @@ class FireTruckCreateView(CreateView):
     success_url = reverse_lazy('truck-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The truck has been successfully added.')
+        messages.success(self.request, 'The truck has been added.')
 
         return super().form_valid(form)
     
@@ -273,7 +273,7 @@ class FireTruckUpdateView(UpdateView):
     success_url = reverse_lazy('truck-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The truck has been successfully updated.')
+        messages.success(self.request, 'The truck has been updated.')
 
         return super().form_valid(form)
     
@@ -281,6 +281,44 @@ class FireTruckDeleteView(DeleteView):
     model = FireTruck
     template_name = 'firetruck_del.html'
     success_url = reverse_lazy('truck-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Successfully deleted.')
+
+        return super().form_valid(form)
+
+class FireFightersList(ListView):
+    model = Firefighters
+    context_object_name = 'fire_fighter'
+    template_name = 'firefighter_list.html'
+    paginate_by = 5
+
+class FireFighterCreateList(CreateView):
+    model = Firefighters
+    form_class = FireFighterForm
+    template_name = 'firefighter_add.html'
+    success_url = reverse_lazy('fighter-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The fire fighter has been added.')
+
+        return super().form_valid(form)
+    
+class FireFighterUpdateView(UpdateView):
+    model = Firefighters
+    form_class = FireFighterForm
+    template_name = 'firefighter_edit.html'
+    success_url = reverse_lazy('fighter-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'The fire fighter has been updated.')
+
+        return super().form_valid(form)
+    
+class FireFighterDeleteView(DeleteView):
+    model = Firefighters
+    template_name = 'firefighter_del.html'
+    success_url = reverse_lazy('fighter-list')
 
     def form_valid(self, form):
         messages.success(self.request, 'Successfully deleted.')
@@ -300,7 +338,7 @@ class IncidentCreateView(CreateView):
     success_url = reverse_lazy('incident-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The incident has been successfully added.')
+        messages.success(self.request, 'The incident has been added.')
 
         return super().form_valid(form)
 
@@ -311,7 +349,7 @@ class IncidentUpdateView(UpdateView):
     success_url = reverse_lazy('incident-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The incident has been successfully updated.')
+        messages.success(self.request, 'The incident has been updated.')
 
         return super().form_valid(form)
 
@@ -338,7 +376,7 @@ class LocationsCreateView(CreateView):
     success_url = reverse_lazy('locations-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The location has been successfully added.')
+        messages.success(self.request, 'The location has been added.')
 
         return super().form_valid(form)
 
@@ -349,7 +387,7 @@ class LocationsUpdateView(UpdateView):
     success_url = reverse_lazy('locations-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The location has been successfully updated.')
+        messages.success(self.request, 'The location has been updated.')
 
         return super().form_valid(form)
 
@@ -376,7 +414,7 @@ class WeatherConditionsCreateView(CreateView):
     success_url = reverse_lazy('weather-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The weather condition has been successfully added.')
+        messages.success(self.request, 'The weather condition has been added.')
 
         return super().form_valid(form)
 
@@ -387,7 +425,7 @@ class WeatherConditionsUpdateView(UpdateView):
     success_url = reverse_lazy('weather-list')
 
     def form_valid(self, form):
-        messages.success(self.request, 'The weather condition has been successfully updated.')
+        messages.success(self.request, 'The weather condition has been updated.')
 
         return super().form_valid(form)
 

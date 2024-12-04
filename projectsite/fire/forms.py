@@ -16,6 +16,11 @@ class FireTruckForm(forms.ModelForm):
         model = FireTruck
         fields = "__all__"
 
+class FireFighterForm(forms.ModelForm):
+    class Meta:
+        model = Firefighters
+        fields = "__all__"
+
 class LocationsForm(forms.ModelForm):
     class Meta:
         model = Locations

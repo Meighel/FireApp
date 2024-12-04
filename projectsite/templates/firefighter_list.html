@@ -7,8 +7,8 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">List of Fire Truck</div>
-                        <div class="card-category text-muted">Fire Truck</div>
+                        <div class="card-title">List of Fire Fighter</div>
+                        <div class="card-category text-muted">Fire Fighter</div>
                     </div>
                     <br />
                     <div class="col-md-12 row">
@@ -26,7 +26,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="pull-right">
-                                <a href="{% url 'truck-add' %}" class="btn btn-success btn-rounded">Add Truck</a>
+                                <a href="{% url 'fighter-add' %}" class="btn btn-success btn-rounded">Add Fire Fighter</a>
                             </div>
                         </div>
                     </div>
@@ -34,9 +34,9 @@
                         <table class="table table-striped mt-3">
                             <thead>
                                 <tr>
-                                    <th scope="col">Truck Number</th>
-                                    <th scope="col">Model</th>
-                                    <th scope="col">Capacity</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Rank</th>
+                                    <th scope="col">Experience Level</th>
                                     <th scope="col">Station</th>
                                     <th scope="col">Action</th>
                                 </tr>
@@ -45,19 +45,19 @@
                                 {% if object_list %}
                                     {% for object in object_list %}
                                     <tr>
-                                        <td>{{ object.truck_number }}</td>
-                                        <td>{{ object.model }}</td>
-                                        <td>{{ object.capacity }}</td>
+                                        <td>{{ object.name }}</td>
+                                        <td>{{ object.rank }}</td>
+                                        <td>{{ object.experience_level }}</td>
                                         <td>{{ object.station }}</td>
                                         <td>
-                                            <a href="{% url 'truck-update' object.id %}">Edit</a>
-                                            <a href="{% url 'truck-delete' object.id %}" class="text-danger">Delete</a>
+                                            <a href="{% url 'fighter-update' object.id %}">Edit</a>
+                                            <a href="{% url 'fighter-delete' object.id %}" class="text-danger">Delete</a>
                                         </td>
                                     </tr>
                                     {% endfor %}
                                 {% else %}
                                     <tr>
-                                        <td colspan="7" class="text-center">No fire incidents found.</td>
+                                        <td colspan="5" class="text-center">No fire incidents found.</td>
                                     </tr>
                                 {% endif %}
                             </tbody>                            
