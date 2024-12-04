@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 from django.utils.timezone import now
 
 class BaseModel(models.Model):
@@ -7,6 +9,16 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
+    
+def validate_not_future(value):
+        if value > now():
+            raise ValidationError('Future dates are not allowed.')
+
+
+def validate_not_negative(value):
+    if value < 0:
+        raise ValidationError('Value cannot be negative.')
 
 
 class Locations(BaseModel):
@@ -29,7 +41,7 @@ class Incident(BaseModel):
         ('Major Fire', 'Major Fire'),
     )
     location = models.ForeignKey(Locations, on_delete=models.CASCADE)
-    date_time = models.DateTimeField(default=now, blank=True, null=True)  # Use timezone-aware default
+    date_time = models.DateTimeField(default=now, blank=True, null=True, validators=[validate_not_future])  # Use timezone-aware default
     severity_level = models.CharField(max_length=45, choices=SEVERITY_CHOICES)
     description = models.CharField(max_length=250)
 
@@ -80,9 +92,9 @@ class FireTruck(BaseModel):
 
 class WeatherConditions(BaseModel):
     incident = models.ForeignKey(Incident, on_delete=models.CASCADE)
-    temperature = models.DecimalField(max_digits=10, decimal_places=2)
-    humidity = models.DecimalField(max_digits=10, decimal_places=2)
-    wind_speed = models.DecimalField(max_digits=10, decimal_places=2)
+    temperature = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_not_negative])
+    humidity = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_not_negative])
+    wind_speed = models.DecimalField(max_digits=10, decimal_places=2, validators=[validate_not_negative])
     weather_description = models.CharField(max_length=150)
 
     def __str__(self):

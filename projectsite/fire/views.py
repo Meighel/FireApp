@@ -341,6 +341,10 @@ class IncidentCreateView(CreateView):
         messages.success(self.request, 'The incident has been added.')
 
         return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error with your submission. Please check the form.")
+        return super().form_invalid(form)
 
 class IncidentUpdateView(UpdateView):
     model = Incident
@@ -352,6 +356,10 @@ class IncidentUpdateView(UpdateView):
         messages.success(self.request, 'The incident has been updated.')
 
         return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error with your submission. Please check the form.")
+        return super().form_invalid(form)
 
 class IncidentDeleteView(DeleteView):
     model = Incident
