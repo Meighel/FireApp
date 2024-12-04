@@ -1,6 +1,86 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<style>
+    /* Custom Styles for Incident Edit Form */
+    .card {
+        margin-top: 20px;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+
+    .card-category {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        font-size: 1rem;
+        font-weight: lighter;
+    }
+
+    .form-control {
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .alert {
+        margin-top: 15px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    .btn-rounded {
+        border-radius: 30px;
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+    }
+
+    .text-danger {
+        font-size: 0.875rem;
+    }
+
+    .form-group ul.text-danger {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .form-group ul.text-danger li {
+        padding: 0;
+    }
+
+    /* Custom form field styles */
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+    }
+
+</style>
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -13,7 +93,33 @@
                     <div class="card-body">
                         <form action="" method="post" novalidate>
                             {% csrf_token %}
-                            {% include 'includes/form.html' %}
+                            <!-- Display non-field errors -->
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {% for error in form.non_field_errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <!-- Loop through each form field and display errors -->
+                            {% for field in form %}
+                                <div class="form-group">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.help_text %}
+                                        <small class="form-text text-muted">{{ field.help_text }}</small>
+                                    {% endif %}
+                                    {% if field.errors %}
+                                        <ul class="text-danger" style="list-style: none; padding: 0;">
+                                            {% for error in field.errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+
                             <div class="form-group mt-3">
                                 <button type="submit" class="btn btn-primary btn-rounded">Submit</button>
                             </div>

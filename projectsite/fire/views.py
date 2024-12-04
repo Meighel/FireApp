@@ -303,7 +303,7 @@ class FireFighterCreateList(CreateView):
         messages.success(self.request, 'The fire fighter has been added.')
 
         return super().form_valid(form)
-    
+
 class FireFighterUpdateView(UpdateView):
     model = Firefighters
     form_class = FireFighterForm
@@ -426,6 +426,10 @@ class WeatherConditionsCreateView(CreateView):
 
         return super().form_valid(form)
 
+    def form_invalid(self, form):
+        messages.error(self.request, "The number should be always positive.")
+        return super().form_invalid(form)
+
 class WeatherConditionsUpdateView(UpdateView):
     model = WeatherConditions
     form_class = WeatherConditionsForm
@@ -436,6 +440,10 @@ class WeatherConditionsUpdateView(UpdateView):
         messages.success(self.request, 'The weather condition has been updated.')
 
         return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "The number should be always positive.")
+        return super().form_invalid(form)
 
 class WeatherConditionsDeleteView(DeleteView):
     model = WeatherConditions
